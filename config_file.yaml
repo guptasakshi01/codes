@@ -1,0 +1,16 @@
+imports:
+- path: firsttemplate.jinja
+
+resources:
+- name: {{ name }}
+  type: firsttemplate.jinja
+  properties:
+    machinetype: {{ machinetype }}
+    zone: {{ zone }}
+    name: {{ name }}
+    project: {{ project }}
+    sourceimage: https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/family/debian-9
+
+outputs:
+- name: host
+  value: $(ref.{{ name }}.host)
