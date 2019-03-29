@@ -1,0 +1,22 @@
+resources:
+- name: {{ properties["name"] }}
+  type: compute.v1.instance
+  properties:
+    zone: {{ properties["zone"] }}
+    machineType: https://www.googleapis.com/compute/v1/projects/{{ properties["project"] }}/zones/{{ properties["zone"] }}/machineTypes/{{ properties["machinetype"] }}
+    disks:
+    - deviceName: boot
+      type: PERSISTENT
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: {{ properties["sourceimage"] }}
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/{{ properties["project"] }}/global/networks/default
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT
+
+outputs:
+- name: host
+  value: $(ref.{{ properties["name"] }}.networkInterfaces[0].networkIP)
